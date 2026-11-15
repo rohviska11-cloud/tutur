@@ -1,0 +1,273 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>tutur. — baca pola bicara dari suaramu</title>
+  <meta name="description" content="Rekam atau unggah suara, lalu lihat apakah polanya mirip bicara dysarthria dan seberapa berat tingkatnya. Dibangun dari data TORGO." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..700;1,9..144,300..600&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="assets/css/style.css" />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='9' fill='%230d3b40'/%3E%3Cpath d='M7 16h3l2-6 4 12 3-9 2 3h4' stroke='%2378d1c0' stroke-width='2.4' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E" />
+</head>
+<body>
+  <div class="grain" aria-hidden="true"></div>
+
+  <header class="top">
+    <a class="brand" href="#coba" aria-label="tutur, ke atas">
+      <svg viewBox="0 0 32 32" width="30" height="30" aria-hidden="true"><rect width="32" height="32" rx="9" fill="#0d3b40"/><path d="M7 16h3l2-6 4 12 3-9 2 3h4" stroke="#78d1c0" stroke-width="2.4" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <span>tutur<em>.</em></span>
+    </a>
+    <nav>
+      <a href="#coba">Coba</a>
+      <a href="#pakai">Cara pakai</a>
+      <a href="#torgo">TORGO</a>
+      <a href="#proses">Prosesnya</a>
+    </nav>
+    <span class="model-pill" id="modelPill"><i></i><b>memuat model</b></span>
+  </header>
+
+  <main>
+    <!-- ============ HERO + ALAT ============ -->
+    <section class="hero" id="coba">
+      <div class="hero-bg" aria-hidden="true">
+        <span class="blob b1"></span><span class="blob b2"></span><span class="blob b3"></span>
+      </div>
+
+      <div class="hero-copy reveal">
+        <p class="kicker">Riset suara · data TORGO</p>
+        <h1>Suara bisa bercerita <em>lebih</em> dari kata-katanya.</h1>
+        <p class="lede">Rekam satu kata atau kalimat pendek. Dalam beberapa detik kamu dapat dua bacaan: apakah polanya mirip bicara dysarthria, dan kira-kira di tingkat mana.</p>
+        <ul class="hero-facts">
+          <li><b>2</b><span>model dibaca<br/>sekaligus</span></li>
+          <li><b>66</b><span>ciri suara<br/>dihitung</span></li>
+          <li><b>0</b><span>file yang<br/>dikirim ke server</span></li>
+        </ul>
+        <div class="wave-deco" aria-hidden="true">
+          <svg viewBox="0 0 600 80" preserveAspectRatio="none">
+            <path class="w1" d="M0 40 Q 37.5 5 75 40 T 150 40 T 225 40 T 300 40 T 375 40 T 450 40 T 525 40 T 600 40" />
+            <path class="w2" d="M0 40 Q 37.5 70 75 40 T 150 40 T 225 40 T 300 40 T 375 40 T 450 40 T 525 40 T 600 40" />
+          </svg>
+        </div>
+      </div>
+
+      <div class="studio reveal" id="studio">
+        <div class="tabs" role="tablist">
+          <button class="tab active" role="tab" aria-selected="true" data-tab="rekam">Rekam langsung</button>
+          <button class="tab" role="tab" aria-selected="false" data-tab="unggah">Unggah file</button>
+          <span class="tab-ink" aria-hidden="true"></span>
+        </div>
+
+        <!-- Panel rekam -->
+        <div class="panel" data-panel="rekam">
+          <div class="prompt">
+            <span>Coba ucapkan</span>
+            <strong id="promptWord">"The quick brown fox"</strong>
+            <button class="ghost tiny" id="shuffle" type="button" title="ganti kalimat">acak</button>
+          </div>
+          <div class="mic-wrap">
+            <canvas id="live" width="640" height="160" aria-hidden="true"></canvas>
+            <button class="mic" id="micBtn" type="button" aria-label="Mulai rekam">
+              <span class="ring r1"></span><span class="ring r2"></span>
+              <svg viewBox="0 0 24 24" class="ico-mic"><path d="M12 15a3 3 0 0 0 3-3V6a3 3 0 0 0-6 0v6a3 3 0 0 0 3 3Zm5-3a5 5 0 0 1-10 0H5a7 7 0 0 0 6 6.92V21h2v-2.08A7 7 0 0 0 19 12h-2Z"/></svg>
+              <svg viewBox="0 0 24 24" class="ico-stop"><rect x="6" y="6" width="12" height="12" rx="3"/></svg>
+            </button>
+          </div>
+          <p class="mic-hint" id="micHint">Tekan tombol, bicara, lalu tekan lagi. Maksimal 10 detik.</p>
+          <p class="timer" id="timer">00.0 s</p>
+        </div>
+
+        <!-- Panel unggah -->
+        <div class="panel hidden" data-panel="unggah">
+          <label class="drop" id="drop">
+            <input type="file" id="fileInput" accept="audio/*,.wav,.mp3,.m4a,.ogg,.webm,.flac" />
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3 7 8h3v6h4V8h3l-5-5Zm-7 14v2h14v-2H5Z"/></svg>
+            <b>Tarik file suara ke sini</b>
+            <span>atau klik untuk memilih · wav, mp3, m4a, ogg, flac</span>
+          </label>
+        </div>
+
+        <!-- Klip siap -->
+        <div class="clip hidden" id="clip">
+          <canvas id="clipWave" width="640" height="90" aria-hidden="true"></canvas>
+          <div class="clip-row">
+            <button class="play" id="playBtn" type="button" aria-label="Putar">
+              <svg viewBox="0 0 24 24" class="ico-play"><path d="M8 5v14l11-7z"/></svg>
+              <svg viewBox="0 0 24 24" class="ico-pause"><path d="M7 5h4v14H7zM13 5h4v14h-4z"/></svg>
+            </button>
+            <div class="clip-meta"><b id="clipName">rekaman</b><span id="clipInfo">-</span></div>
+            <button class="ghost tiny" id="clearBtn" type="button">hapus</button>
+          </div>
+          <audio id="player" preload="auto"></audio>
+        </div>
+
+        <button class="cta" id="analyzeBtn" type="button" disabled>
+          <span class="cta-label">Baca suaranya</span>
+          <span class="cta-bars" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></span>
+        </button>
+        <p class="note" id="studioNote">Semua dihitung di browser kamu. Suara tidak diunggah ke mana pun.</p>
+      </div>
+    </section>
+
+    <!-- ============ HASIL ============ -->
+    <section class="results hidden" id="hasil" aria-live="polite">
+      <div class="section-head">
+        <p class="kicker">Hasil bacaan</p>
+        <h2 id="resultTitle">Begini pola suaramu terbaca.</h2>
+      </div>
+      <div class="result-grid">
+        <article class="rcard status-card">
+          <header><span class="chip">Model 1</span><h3>Status bicara</h3></header>
+          <div class="gauge">
+            <svg viewBox="0 0 200 200">
+              <circle class="g-track" cx="100" cy="100" r="82" />
+              <circle class="g-fill" id="gFill" cx="100" cy="100" r="82" />
+            </svg>
+            <div class="g-center"><b id="gPct">0%</b><span>mirip dysarthria</span></div>
+          </div>
+          <p class="verdict" id="statusVerdict">-</p>
+          <div class="split-bar"><i id="sbHealthy"></i><i id="sbDys"></i></div>
+          <div class="split-legend"><span>sehat <b id="pHealthy">-</b></span><span>dysarthria <b id="pDys">-</b></span></div>
+        </article>
+
+        <article class="rcard sev-card">
+          <header><span class="chip">Model 2</span><h3>Tingkat keparahan</h3></header>
+          <ol class="ladder" id="ladder"></ol>
+          <p class="verdict" id="sevVerdict">-</p>
+          <p class="small" id="sevNote"></p>
+        </article>
+
+        <article class="rcard feat-card">
+          <header><span class="chip soft">Sekilas</span><h3>Ciri yang terbaca</h3></header>
+          <dl class="feats" id="featList"></dl>
+          <p class="small">Angka ini ikut dipakai model, bukan nilai klinis. Nada dan getaran paling stabil kalau kamu mengucapkan vokal panjang.</p>
+        </article>
+      </div>
+      <p class="disclaimer">Ini alat belajar dari sebuah penelitian, bukan diagnosis. Kalau ada kekhawatiran soal bicara, temui dokter atau terapis wicara.</p>
+    </section>
+
+    <!-- ============ CARA PAKAI ============ -->
+    <section class="howto" id="pakai">
+      <div class="section-head reveal">
+        <p class="kicker">Cara pakai</p>
+        <h2>Tiga langkah, kurang dari semenit.</h2>
+      </div>
+      <ol class="steps">
+        <li class="reveal">
+          <span class="num">01</span>
+          <h3>Pilih cara</h3>
+          <p>Rekam langsung lewat mikrofon, atau unggah file suara yang sudah ada.</p>
+        </li>
+        <li class="reveal">
+          <span class="num">02</span>
+          <h3>Ucapkan dengan wajar</h3>
+          <p>Satu kata atau kalimat pendek berbahasa Inggris, 1 sampai 5 detik. Ruangan tenang, jarak mikrofon sejengkal.</p>
+        </li>
+        <li class="reveal">
+          <span class="num">03</span>
+          <h3>Baca hasilnya</h3>
+          <p>Tekan <em>Baca suaranya</em>. Dua kartu muncul: status bicara dan tingkat keparahan, lengkap dengan persentasenya.</p>
+        </li>
+      </ol>
+      <div class="tips reveal">
+        <span>Tips</span>
+        <p>Model belajar dari rekaman berbahasa Inggris, jadi kata Inggris memberi hasil paling masuk akal. Hindari musik, kipas angin, atau suara orang lain di belakang.</p>
+      </div>
+    </section>
+
+    <!-- ============ TORGO + KELAS ============ -->
+    <section class="torgo" id="torgo">
+      <div class="torgo-intro reveal">
+        <p class="kicker">Sumber belajarnya</p>
+        <h2>Apa itu TORGO?</h2>
+        <p>TORGO adalah kumpulan rekaman suara dari University of Toronto. Isinya orang yang bicara dengan dysarthria karena cerebral palsy atau ALS, dan orang tanpa gangguan bicara sebagai pembanding. Mereka membaca kata, kalimat, dan bunyi yang sama, jadi perbedaannya bisa dipelajari.</p>
+        <p><b>Dysarthria</b> itu gangguan bicara karena otot untuk bicara melemah atau sulit dikendalikan. Bicaranya bisa terdengar pelan, sengau, terputus, atau kurang jelas, padahal pikirannya utuh.</p>
+      </div>
+      <div class="classes">
+        <article class="ccard reveal">
+          <h3>Model 1 · Status bicara</h3>
+          <div class="pair">
+            <div><span class="dot ok"></span><b>Sehat</b><p>Pola bicara mirip penutur tanpa gangguan.</p></div>
+            <div><span class="dot warn"></span><b>Dysarthria</b><p>Pola mirip penutur dengan dysarthria.</p></div>
+          </div>
+        </article>
+        <article class="ccard reveal">
+          <h3>Model 2 · Tingkat keparahan</h3>
+          <ul class="scale" id="scaleInfo">
+            <li><i style="--l:1"></i><b>Tipikal</b><span>tidak ada gangguan</span></li>
+            <li><i style="--l:2"></i><b>Ringan</b><span>sedikit kurang jelas</span></li>
+            <li><i style="--l:3"></i><b>Sedang</b><span>sering sulit ditangkap</span></li>
+            <li><i style="--l:4"></i><b>Berat</b><span>sebagian besar sulit dipahami</span></li>
+          </ul>
+        </article>
+      </div>
+    </section>
+
+    <!-- ============ PROSES ============ -->
+    <section class="process" id="proses">
+      <div class="section-head reveal">
+        <p class="kicker">Di balik layar</p>
+        <h2>Dari suara sampai jawaban.</h2>
+      </div>
+      <div class="flow">
+        <div class="flow-line" aria-hidden="true"><span></span></div>
+        <div class="fstep reveal">
+          <div class="ficon"><svg viewBox="0 0 24 24"><path d="M3 12h2l2-5 3 10 3-8 2 3h6"/></svg></div>
+          <h3>Dirapikan</h3>
+          <p>Suara dijadikan satu kanal, disamakan kecepatannya, dan volumenya diratakan. Jeda tidak dibuang, karena jeda juga petunjuk.</p>
+        </div>
+        <div class="fstep reveal">
+          <div class="ficon"><svg viewBox="0 0 24 24"><path d="M4 18V9M9 18V5M14 18v-7M19 18V8"/></svg></div>
+          <h3>Diambil cirinya</h3>
+          <p>Warna suara (MFCC), tinggi nada, kestabilan getaran pita suara, kejernihan, dan energi dirangkum jadi 66 angka.</p>
+        </div>
+        <div class="fstep reveal">
+          <div class="ficon"><svg viewBox="0 0 24 24"><path d="M12 3 6 11h3l-4 6h5v4h4v-4h5l-4-6h3z"/></svg></div>
+          <h3>Ditimbang 300 pohon</h3>
+          <p>Model Random Forest berisi 300 pohon keputusan. Tiap pohon memberi suara, lalu suara terbanyak jadi jawabannya.</p>
+        </div>
+        <div class="fstep reveal">
+          <div class="ficon"><svg viewBox="0 0 24 24"><path d="m5 12 4 4 10-10"/></svg></div>
+          <h3>Jadi persentase</h3>
+          <p>Porsi pohon yang setuju ditampilkan sebagai persen. Makin besar, makin yakin modelnya.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ AKURASI ============ -->
+    <section class="honest">
+      <div class="honest-card reveal">
+        <div>
+          <p class="kicker">Jujur soal angka</p>
+          <h2>Seberapa sering benar?</h2>
+          <p>Kedua model diuji pada orang yang suaranya <em>tidak pernah</em> dipakai saat belajar. Hasilnya cukup baik untuk status bicara, dan masih jadi pekerjaan rumah untuk tingkat keparahan.</p>
+        </div>
+        <div class="meters">
+          <div class="meter" data-val="69.4">
+            <span class="m-label">Status bicara</span>
+            <div class="m-bar"><i></i></div>
+            <span class="m-val">69%<small> akurasi</small></span>
+            <span class="m-sub">presisi dysarthria 76% · F1 0,68</span>
+          </div>
+          <div class="meter" data-val="47.9">
+            <span class="m-label">Tingkat keparahan</span>
+            <div class="m-bar"><i></i><b class="chance" style="--c:25%"></b></div>
+            <span class="m-val">48%<small> akurasi</small></span>
+            <span class="m-sub">tebak acak 25% · meleset paling jauh satu tingkat 78%</span>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="foot">
+    <p><b>tutur.</b> Proyek penelitian klasifikasi suara dysarthria. Data: TORGO Database (Rudzicz dkk., University of Toronto).</p>
+    <p class="muted">Model: Random Forest · MFCC-Statistik (52) untuk status, MFCC + Akustik (66) untuk keparahan.</p>
+  </footer>
+
+  <div class="toast" id="toast" role="status"></div>
+
+  <script src="assets/js/app.js"></script>
+</body>
+</html>
