@@ -1,0 +1,48 @@
+{
+ "versi": "202611160841",
+ "tasks": {
+  "speech_status": {
+   "onnx_parts": [
+    "wavlm_l8.onnx.part000",
+    "wavlm_l8.onnx.part001",
+    "wavlm_l8.onnx.part002",
+    "wavlm_l8.onnx.part003",
+    "wavlm_l8.onnx.part004",
+    "wavlm_l8.onnx.part005",
+    "wavlm_l8.onnx.part006",
+    "wavlm_l8.onnx.part007",
+    "wavlm_l8.onnx.part008",
+    "wavlm_l8.onnx.part009"
+   ],
+   "onnx_bytes": 93520805,
+   "svm": "svm_speech_status.json",
+   "embed": "WavLM-Base+",
+   "hf": "microsoft/wavlm-base-plus",
+   "layer": 8,
+   "C": 1.0
+  },
+  "severity": {
+   "onnx_parts": [
+    "hubert_l12.onnx.part000",
+    "hubert_l12.onnx.part001",
+    "hubert_l12.onnx.part002",
+    "hubert_l12.onnx.part003",
+    "hubert_l12.onnx.part004",
+    "hubert_l12.onnx.part005",
+    "hubert_l12.onnx.part006",
+    "hubert_l12.onnx.part007",
+    "hubert_l12.onnx.part008",
+    "hubert_l12.onnx.part009",
+    "hubert_l12.onnx.part010",
+    "hubert_l12.onnx.part011",
+    "hubert_l12.onnx.part012"
+   ],
+   "onnx_bytes": 121865659,
+   "svm": "svm_severity.json",
+   "embed": "HuBERT-Base",
+   "hf": "facebook/hubert-base-ls960",
+   "layer": 12,
+   "C": 1.0
+  }
+ }
+}
